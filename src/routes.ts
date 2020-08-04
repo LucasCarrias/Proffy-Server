@@ -29,8 +29,7 @@ routes.post("/classes", async (req, res) => {
             avatar,
             whatsapp,
             bio
-        })
-        .catch(err => console.log(err));
+        });
     
         const user_id = insertedUsersIds[0];
     
@@ -55,8 +54,10 @@ routes.post("/classes", async (req, res) => {
     
         await trx.commit();
     
-        return res.send();
+        return res.status(201).send();
     } catch (err) {
+        await trx.rollback();
+
         return res.status(400).json({
             error: "Unexpected error while creating new class"
         })
